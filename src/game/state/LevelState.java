@@ -2,9 +2,10 @@ package game.state;
  
 import game.Game;
 import game.character.Player;
-import game.controller.PlayerController;
 import game.controller.MouseAndKeyBoardPlayerController;
+import game.controller.PlayerController;
 import game.level.Level;
+import game.physics.Physics;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -19,6 +20,7 @@ public class LevelState extends BasicGameState {
     private String startinglevel;
     private Player player;
     private PlayerController playerController;
+    private Physics physics;
  
     public LevelState(String startingLevel){
         this.startinglevel = startingLevel;
@@ -32,12 +34,14 @@ public class LevelState extends BasicGameState {
         player = new Player(128, 416);
         level.addCharacter(player);
         
+        physics = new Physics();
         //and we create a controller, for now we use the MouseAndKeyBoardPlayerController
         playerController = new MouseAndKeyBoardPlayerController(player);
     }
  
     public void update(GameContainer container, StateBasedGame sbg, int delta) throws SlickException {
     	playerController.handleInput(container.getInput(), delta);
+    	physics.handlePhysics(level, delta);
     }
  
     public void render(GameContainer container, StateBasedGame sbg, Graphics g) throws SlickException {
